@@ -43,31 +43,57 @@ export class FormComponent implements AfterViewInit {
     let previousValid = this.form.valid;
     this.form.changes.subscribe(() => {
 
+
+
+      if (this.form.value.noPhone) {
+
+        this.form.form.controls['phone'].disable({onlySelf: true });
+      } else {
+        this.form.form.controls['phone'].enable({onlySelf: true });
+      }
+
+      const subIndex = this.type === 'patients' ? 'companion' : 'reference';
+
+      if (this.form.value[subIndex].noPhoneReference === true) {
+        this.form.form.controls[subIndex]['controls']['phoneReference'].disable({onlySelf: true });
+      } else if (this.form.form.controls[subIndex]['controls']['phoneReference'] !== undefined) {
+        this.form.form.controls[subIndex]['controls']['phoneReference'].enable({onlySelf: true });
+      }
+
+      const arrayErrors = [];
       Object.keys(this.form.form.controls).forEach(key => {
 
         const controlErrors = this.form.form.controls[key].errors;
+
         if (controlErrors != null) {
-          const arrayErrors = [];
+
           Object.keys(controlErrors).forEach(keyError => {
             arrayErrors.push(key + ' ' + keyError);
           });
-          this.alertService.error(JSON.stringify(arrayErrors));
+
         }
+
+
       });
-      if (this.form.valid !== previousValid) {
+
+      if (arrayErrors.length !== 0) {
+        this.alertService.error(JSON.stringify(arrayErrors));
         previousValid = this.form.valid;
-        this.form.setDisabled('submit', !previousValid);
-        this.alertService.error('error');
+        this.form.setDisabled('submit', true);
+      } else {
+        this.alertService.success('Formulario valido');
+        this.form.setDisabled('submit', false);
       }
 
-      if(this.type === 'patients'){
+
+
+      if (this.type === 'patients') {
         if (this.form.value.companionOption) {
           this.form.controls[this.form.controls.length - 1].hidden = false;
         } else {
           this.form.controls[this.form.controls.length - 1].hidden = true;
         }
-      } else if (this.type === 'profesionals'){
-        console.log(this.form.controls[this.form.controls.length - 1]);
+      } else if (this.type === 'profesional') {
         if (this.form.value.referenceOption) {
           this.form.controls[this.form.controls.length - 1].hidden = false;
         } else {
@@ -81,18 +107,18 @@ export class FormComponent implements AfterViewInit {
   }
 
   submit(value: {[name: string]: any}) {
-    if(this.type === 'patients'){
-      if(value.companionOption === false){
+    if (this.type === 'patients') {
+      if (value.companionOption === false) {
         delete value.companion;
       }
-    } else if (this.type === 'profesionals'){
-      if(value.referenceOption === false){
+    } else if (this.type === 'profesionals') {
+      if (value.referenceOption === false) {
         delete value.reference;
       }
     }
 
-    if(this.type === 'patients'){
-      if(this.structureService.idToUpdate !== null){
+    if (this.type === 'patients') {
+      if (this.structureService.idToUpdate !== null) {
         this.pacienteService.update(value, this.structureService.idToUpdate).subscribe(
           data => {
             this.modalService.close();
@@ -119,8 +145,8 @@ export class FormComponent implements AfterViewInit {
         );
       }
 
-    }else if('profesionals'){
-      if(this.structureService.idToUpdate !== null){
+    } else if ('profesionals') {
+      if (this.structureService.idToUpdate !== null) {
         this.profesionalsService.update(value, this.structureService.idToUpdate).subscribe(
           data => {
             this.modalService.close();
@@ -153,7 +179,7 @@ export class FormComponent implements AfterViewInit {
 
   removeNode(name) {
 
-    for (let key in this.config) {
+    for (const key in this.config) {
       if (this.config.hasOwnProperty(key) && this.config[key] === name) {
         delete this.config[key];
       }

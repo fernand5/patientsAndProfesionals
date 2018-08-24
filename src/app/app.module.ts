@@ -21,6 +21,7 @@ import {ProfesionalService} from './_services/profesional.service';
 import {StructureService} from './_services/structure.service';
 import {ConfirmBoxComponent} from './confirm-box/confirm-box.component';
 import {ModalGenericComponent} from './modal-generic/modal-generic.component';
+import {AngularFontAwesomeModule} from 'angular-font-awesome';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {ModalGenericComponent} from './modal-generic/modal-generic.component';
     FormsModule,
     DynamicFormModule,
     DataTableModule,
+    AngularFontAwesomeModule,
     NgbModule.forRoot(),
   ],
   providers: [

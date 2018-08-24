@@ -1,7 +1,5 @@
 ﻿import {EventEmitter, Injectable, Output} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Validators} from '@angular/forms';
-import {DynamicFormComponent} from '../dynamic-form/containers/dynamic-form/dynamic-form.component';
 
 @Injectable()
 export class StructureService {
@@ -12,7 +10,7 @@ export class StructureService {
 
   config = [];
 
-  constructor(private http: HttpClient) {
+  constructor() {
   }
   @Output() change: EventEmitter<any> = new EventEmitter();
 
@@ -74,7 +72,7 @@ export class StructureService {
         name: 'birthDate',
         placeholder: 'birth',
         maxValue: new Date(),
-        validation: [Validators.required, Validators.minLength(0)]
+        validation: [Validators.minLength(0)]
       },
       {
         type: 'input',
@@ -84,6 +82,7 @@ export class StructureService {
         validation: [Validators.email]
       },
       {
+        disabled: false,
         type: 'input',
         label: 'Telefono',
         name: 'phone',
@@ -92,11 +91,18 @@ export class StructureService {
       },
       {
         type: 'checkbox',
+        label: 'Sin telefono',
+        name: 'noPhone',
+        placeholder: 'Sin telefono',
+        validation: []
+      },
+      {
+        type: 'checkbox',
         function: 'addReference()',
         label: this.type === 'patients' ? 'Acompañante' : 'Referencia',
         name: this.type === 'patients' ? 'companionOption' : 'referenceOption',
         placeholder: this.type === 'patients' ? 'Acompañante' : 'Referencia',
-        validation: [Validators.required]
+        validation: []
       },
 
       {
@@ -129,11 +135,19 @@ export class StructureService {
             validation: [Validators.minLength(0), Validators.maxLength(20)]
           },
           {
+            disabled: false,
             type: 'input',
             label: 'Telefono contacto',
             name: 'phoneReference',
             placeholder: 'Telefono contacto',
             validation: [Validators.minLength(7), Validators.maxLength(10)]
+          },
+          {
+            type: 'checkbox',
+            label: 'Sin telefono',
+            name: 'noPhoneReference',
+            placeholder: 'Sin telefono',
+            validation: []
           },
           {
             type: 'input',

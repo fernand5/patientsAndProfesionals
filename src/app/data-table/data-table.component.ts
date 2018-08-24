@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DataTableResource} from 'angular5-data-table';
-// import {CommerceService} from '../_services/commerce.service';
 import {PacienteService} from '../_services/paciente.service';
 import {ProfesionalService} from '../_services/profesional.service';
 import {StructureService} from '../_services/structure.service';
@@ -15,7 +14,7 @@ import {ModalGenericComponent} from '../modal-generic/modal-generic.component';
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss']
 })
-export class DataTableViewComponent implements OnInit{
+export class DataTableViewComponent implements OnInit {
 
   itemResource = null;
   items = [];
@@ -28,34 +27,25 @@ export class DataTableViewComponent implements OnInit{
   constructor(private pacienteService: PacienteService,
               private structureService: StructureService,
               private modalService: NgbModal,
-              // private form: DynamicFormComponent,
               private profesionalService: ProfesionalService) {
-    if(this.type === 'patients') {
+    if (this.type === 'patients') {
       this.pacienteService.getAll().subscribe(
         data => {
 
           this.itemResource = new DataTableResource(data);
           this.itemResource.count().then(count => this.itemCount = count);
-          this.reloadItems({offset: 0, limit:10});
-
-
-          // this.items = data.content;
-          console.log(data);
+          this.reloadItems({offset: 0, limit: 10});
         },
         error => {
           console.log(error);
         }
       );
-    } else if (this.type === 'profesional'){
+    } else if (this.type === 'profesional') {
       this.profesionalService.getAll().subscribe(
         data => {
-
           this.itemResource = new DataTableResource(data);
           this.itemResource.count().then(count => this.itemCount = count);
-          this.reloadItems({offset: 0, limit:10});
-
-
-          // this.items = data.content;
+          this.reloadItems({offset: 0, limit: 10});
           console.log(data);
         },
         error => {
@@ -67,26 +57,26 @@ export class DataTableViewComponent implements OnInit{
   }
 
   ngOnInit() {
-    if (this.type === 'patients'){
+    if (this.type === 'patients') {
       this.pacienteService.reload.subscribe(data => {
-        this.reloadItems({offset: 0, limit:10});
+        this.reloadItems({offset: 0, limit: 10});
       });
-    } else if (this.type === 'profesional'){
+    } else if (this.type === 'profesional') {
       this.profesionalService.reload.subscribe(data => {
-        this.reloadItems({offset: 0, limit:10});
+        this.reloadItems({offset: 0, limit: 10});
       });
     }
   }
 
   reloadItems(params) {
 
-    if (this.type === 'patients'){
+    if (this.type === 'patients') {
       this.pacienteService.getAll().subscribe(
         data => {
 
           const arrayToShow = [];
           for (const key in data) {
-            if (key === 'length' || !data.hasOwnProperty(key)) continue;
+            if (key === 'length' || !data.hasOwnProperty(key)) { continue; }
             data[key]['id'] = key;
             arrayToShow.push(data[key]);
           }
@@ -97,13 +87,13 @@ export class DataTableViewComponent implements OnInit{
           console.log(error);
         }
       );
-    }else if(this.type === 'profesional'){
+    } else if (this.type === 'profesional') {
       this.profesionalService.getAll().subscribe(
         data => {
 
           const arrayToShow = [];
           for (const key in data) {
-            if (key === 'length' || !data.hasOwnProperty(key)) continue;
+            if (key === 'length' || !data.hasOwnProperty(key)) { continue; }
             data[key]['id'] = key;
             arrayToShow.push(data[key]);
           }
@@ -126,37 +116,34 @@ export class DataTableViewComponent implements OnInit{
     console.log('Clicked: ' + rowEvent.row.item);
   }
 
-  rowDoubleClick(rowEvent) {
-    console.log(rowEvent.row.item);
-    this.structureService.setData(rowEvent.row.item, this.type);
+  update(item) {
+    this.structureService.setData(item, this.type);
 
     const modalRef = this.modalService.open(ModalGenericComponent);
     modalRef.componentInstance.title = 'About';
-    // this.commerceService.setCommerceToUpdate(rowEvent.row.item);
   }
 
-  delete(item){
+  delete(item) {
     const modalRef = this.modalService.open(ConfirmBoxComponent, { backdrop: 'static' });
-    modalRef.componentInstance.confirmationBoxTitle = 'Confirmacion';
-    modalRef.componentInstance.confirmationMessage = 'Seguro quiere borrar el registro?';
+    modalRef.componentInstance.confirmationBoxTitle = 'Seguro quiere borrar el registro? ';
 
     modalRef.result.then((userResponse) => {
-      if(userResponse === 'accept'){
-        if (this.type === 'patients'){
+      if (userResponse === 'accept') {
+        if (this.type === 'patients') {
           this.pacienteService.delete(item).subscribe(
             data => {
               console.log(data);
-              this.reloadItems({offset: 0, limit:10});
+              this.reloadItems({offset: 0, limit: 10});
             },
             error => {
               console.log(error);
             }
           );
-        }else if(this.type === 'profesional'){
+        } else if (this.type === 'profesional') {
           this.profesionalService.delete(item).subscribe(
             data => {
               console.log(data);
-              this.reloadItems({offset: 0, limit:10});
+              this.reloadItems({offset: 0, limit: 10});
             },
             error => {
               console.log(error);
@@ -173,12 +160,11 @@ export class DataTableViewComponent implements OnInit{
   viewReference(items) {
     const modalRef = this.modalService.open(ConfirmBoxComponent, { backdrop: 'static' });
     modalRef.componentInstance.confirmationBoxTitle = this.type === 'patients' ? 'Acompañante' : 'Referencia';
-
-    let data = [];
-    // console.log(JSON.parse(items[0]));
+    const data = [];
     Object.keys(items).forEach(item => {
-
+      if (item !== 'noPhoneReference') {
       data.push(items[item]);
+      }
     });
 
     console.log(data);
@@ -186,5 +172,14 @@ export class DataTableViewComponent implements OnInit{
     modalRef.componentInstance.confirmationMessage = data;
   }
 
+  openCreate() {
+    this.structureService.setData([], this.type);
+
+    const modalRef = this.modalService.open(ModalGenericComponent);
+    modalRef.componentInstance.title = 'About';
+  }
+
   rowTooltip(item) { return item.jobTitle; }
+
+
 }

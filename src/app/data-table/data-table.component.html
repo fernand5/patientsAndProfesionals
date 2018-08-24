@@ -1,4 +1,6 @@
-<div style="margin: auto; max-width: 1000px; margin-bottom: 50px;">
+
+<!--<div style="margin: auto; max-width: 50%; margin-bottom: 50px;">-->
+  <h3>{{type == 'patients'? 'Pacientes' : 'Profesionales'}}</h3>
   <data-table id="persons-grid"
               headerTitle="type"
               [items]="items"
@@ -7,7 +9,6 @@
               [pageLimits]="limits"
 
               (rowClick)="rowClick($event)"
-              (rowDoubleClick)="rowDoubleClick($event)"
               [rowTooltip]="rowTooltip"
   >
     <data-table-column
@@ -25,28 +26,33 @@
     <data-table-column
       [property]="'phone'"
       [header]="'Telefono'"
+      [width]="80"
       [sortable]="false"
       [resizable]="false">
     </data-table-column>
     <data-table-column
       [property]="'documentType'"
       [header]="'Documento'"
-      [sortable]="false"
-      [resizable]="true">
+      [sortable]="false">
       <ng-template #dataTableCell let-item="item">
-        <h5>{{item.documentType.description}} {{item.documentType.id}}</h5>
+        <span>{{item.documentType.description}} {{item.documentType.id}}</span>
       </ng-template>
 
     </data-table-column>
 
     <data-table-column
-      [property]="'companion'"
-      [header]="'Documento'"
+      [header]="'reference'"
       [sortable]="false"
+      [width]="90"
       [resizable]="true">
+      <ng-template #dataTableHeader let-item="item">
+        <span>Referencia</span>
+      </ng-template>
       <ng-template #dataTableCell let-item="item">
-        <button *ngIf="item.companion" class="btn btn-sm btn-default" (click)="viewReference(item.companion);">Ver</button>
-        <button *ngIf="item.reference" class="btn btn-sm btn-default" (click)="viewReference(item.reference);">Ver</button>
+        <button *ngIf="item.companion" class="btn btn-sm btn-default" (click)="viewReference(item.companion);">Ver
+        </button>
+        <button *ngIf="item.reference" class="btn btn-sm btn-default" (click)="viewReference(item.reference);">Ver
+        </button>
       </ng-template>
     </data-table-column>
     <data-table-column
@@ -57,14 +63,20 @@
     </data-table-column>
 
     <data-table-column
+      [width]="90"
       header="Actions">
       <ng-template #dataTableHeader let-item="item">
         <i>Acciones</i>
       </ng-template>
       <ng-template #dataTableCell let-item="item">
-        <button class="btn btn-sm btn-default" (click)="delete(item.id);">Borrar</button>
+        <a (click)="update(item);"><fa name="edit"></fa></a>
+        <a (click)="delete(item.id);"><fa name="trash" ></fa></a>
       </ng-template>
     </data-table-column>
+
   </data-table>
-</div>
+  <button class="btn btn-lg btn-outline-primary" (click)="openCreate()">Crear {{typeMessage}}</button>
+
+
+<!--</div>-->
 

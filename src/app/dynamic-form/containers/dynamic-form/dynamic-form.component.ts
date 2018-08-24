@@ -74,9 +74,10 @@ export class DynamicFormComponent implements OnChanges, OnInit {
           control.array.forEach(subcontrol => {
             subGroup.addControl(subcontrol.name, this.createControl(subcontrol));
           });
-          // console.log(group);
+
           group.removeControl(control.name);
           group.addControl(control.name, subGroup);
+          console.log(group);
 
         } else {
           group.addControl(control.name, this.createControl(control));
@@ -106,7 +107,7 @@ export class DynamicFormComponent implements OnChanges, OnInit {
 
   setDisabled(name: string, disable: boolean) {
     if (this.form.controls[name]) {
-      const method = disable ? 'disable': 'enable';
+      const method = disable ? 'disable' : 'enable';
       this.form.controls[name][method]();
       return;
     }

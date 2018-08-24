@@ -8,12 +8,13 @@ import { FieldConfig } from '../../models/field-config.interface';
   selector: 'form-input',
   styleUrls: ['form-input.component.scss'],
   template: `
-    <div [hidden]="config.hidden"
+    <div
       class="dynamic-field form-input"
       [formGroup]="group">
       <label>{{ config.label }}</label>
       <input
         type="text"
+        [disabled]="config.disabled"
         [attr.placeholder]="config.placeholder"
         [formControlName]="config.name">
     </div>
