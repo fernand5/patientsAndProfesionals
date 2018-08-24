@@ -1,0 +1,10 @@
+<div role="document" class="modal-dialog">
+  <div class="modal-content">
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span class="modal-span" aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

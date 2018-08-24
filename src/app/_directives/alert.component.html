@@ -1,0 +1,8 @@
+﻿<span *ngIf="message && isArray(message.text)" >
+       <div  *ngFor="let m of message.text" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">
+         {{m}}<br>
+       </div>
+
+    </span>
+
+<div *ngIf="message && !isArray(message.text)" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">{{message.text}}</div>

@@ -1,0 +1,70 @@
+<div style="margin: auto; max-width: 1000px; margin-bottom: 50px;">
+  <data-table id="persons-grid"
+              headerTitle="type"
+              [items]="items"
+              [itemCount]="itemCount"
+              (reload)="reloadItems($event)"
+              [pageLimits]="limits"
+
+              (rowClick)="rowClick($event)"
+              (rowDoubleClick)="rowDoubleClick($event)"
+              [rowTooltip]="rowTooltip"
+  >
+    <data-table-column
+      [property]="'firstName'"
+      [header]="'Nombre'"
+      [sortable]="false"
+      [resizable]="true">
+    </data-table-column>
+    <data-table-column
+      [property]="'lastName'"
+      [header]="'Apellido'"
+      [sortable]="false"
+      [resizable]="true">
+    </data-table-column>
+    <data-table-column
+      [property]="'phone'"
+      [header]="'Telefono'"
+      [sortable]="false"
+      [resizable]="false">
+    </data-table-column>
+    <data-table-column
+      [property]="'documentType'"
+      [header]="'Documento'"
+      [sortable]="false"
+      [resizable]="true">
+      <ng-template #dataTableCell let-item="item">
+        <h5>{{item.documentType.description}} {{item.documentType.id}}</h5>
+      </ng-template>
+
+    </data-table-column>
+
+    <data-table-column
+      [property]="'companion'"
+      [header]="'Documento'"
+      [sortable]="false"
+      [resizable]="true">
+      <ng-template #dataTableCell let-item="item">
+        <button *ngIf="item.companion" class="btn btn-sm btn-default" (click)="viewReference(item.companion);">Ver</button>
+        <button *ngIf="item.reference" class="btn btn-sm btn-default" (click)="viewReference(item.reference);">Ver</button>
+      </ng-template>
+    </data-table-column>
+    <data-table-column
+      [property]="'email'"
+      [header]="'Correo'"
+      [sortable]="false"
+      [resizable]="true">
+    </data-table-column>
+
+    <data-table-column
+      header="Actions">
+      <ng-template #dataTableHeader let-item="item">
+        <i>Acciones</i>
+      </ng-template>
+      <ng-template #dataTableCell let-item="item">
+        <button class="btn btn-sm btn-default" (click)="delete(item.id);">Borrar</button>
+      </ng-template>
+    </data-table-column>
+  </data-table>
+</div>
+
