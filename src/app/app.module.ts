@@ -11,7 +11,6 @@ import {DynamicFormModule} from './dynamic-form/dynamic-form.module';
 import {AlertService} from './_services/alert.service';
 import {AlertComponent} from './_directives/alert.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { GenericFormComponent } from './generic-form/generic-form.component';
 import {PacienteService} from './_services/paciente.service';
 import {DataTableModule} from 'angular5-data-table';
 import {DataTableViewComponent} from './data-table/data-table.component';
@@ -30,7 +29,6 @@ import {AngularFontAwesomeModule} from 'angular-font-awesome';
     FormComponent,
     AlertComponent,
     DashboardComponent,
-    GenericFormComponent,
     DataTableViewComponent,
     ModalComponent,
     ConfirmBoxComponent,
